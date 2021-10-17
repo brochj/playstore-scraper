@@ -35,10 +35,10 @@ class SqliteORM:
         cursor = self.connection.cursor()
 
         developer = values.get("developer")
-        address = values.get("address")
-        email = values.get("emai")
-        google_id = values.get("google_id")
-        url = values.get("url")
+        address = values.get("developer_address")
+        email = values.get("developer_email")
+        google_id = values.get("developer_id")
+        url = values.get("developer_url")
 
         cursor.execute(
             "INSERT INTO developers VALUES (NULL, ?, ?, ?, ?, ?)",
@@ -257,3 +257,8 @@ class SqliteORM:
             """
         )
         return cursor.fetchone()
+
+    def checkAppExistance(self, app_id: str) -> bool:
+        cursor = self.connection.cursor()
+        cursor.execute(f"SELECT rowid, * FROM apps WHERE app_id =  '{app_id}'")
+        return True if cursor.fetchone() else False

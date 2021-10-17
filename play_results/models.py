@@ -60,6 +60,14 @@ SCREENSHOTS_TABLE = """CREATE TABLE IF NOT EXISTS screenshots (
     )
 """
 
+INTERACTIVE_ELEMENTS_TABLE = """CREATE TABLE IF NOT EXISTS interactive_elements (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        interactive_element TEXT,
+        app_id INTEGER,
+        FOREIGN KEY (app_id) REFERENCES apps (id)
+    )
+"""
+
 HISTOGRAMS_TABLE = """CREATE TABLE IF NOT EXISTS histograms (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         one_star TEXT,
