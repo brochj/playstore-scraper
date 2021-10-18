@@ -58,6 +58,7 @@ if __name__ == "__main__":
         for url in urls:
             random_delay()
             try:
+                print(f"scraping: {get_id_from_url(url)}")
                 app_data = scrape(url)
                 save_data(app_data)
             except ValueError as e:

@@ -42,7 +42,8 @@ class SaveToDB:
         self._save_categories()
         self._save_content_ratings()
         self._save_histogram()
-        self._save_interactive_elements()
+        if self.app_data.get("interactive_elements"):
+            self._save_interactive_elements()
         self._save_screenshots()
 
         self.sqlite.try_to_commit_and_close()
