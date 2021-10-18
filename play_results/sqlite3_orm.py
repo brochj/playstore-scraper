@@ -196,13 +196,6 @@ class SqliteORM:
             f"""
             SELECT
                 apps.id AS appid,
-                categories.id AS category_id,
-                content_ratings.id AS content_rating_id,
-                screenshots.id AS screenshot_id,
-                interactive_elements.id AS interactive_element_id,
-                histograms.id AS histogram_id,
-                developers.id AS developer_id,
-
                 apps.app_id,
                 apps.contains_ads,
                 apps.current_version,
@@ -225,21 +218,7 @@ class SqliteORM:
                 apps.url,
                 apps.video,
 
-                categories.category,
-
-                content_ratings.content_rating,
-
-                screenshots.screenshot,
-
-                interactive_elements.interactive_element,
-
-                histograms.histogram,
-                histograms.one_star,
-                histograms.two_stars,
-                histograms.three_stars,
-                histograms.four_stars,
-                histograms.five_stars,
-
+                developers.id AS developer_id,
                 developers.developer,
                 developers.address,
                 developers.email,
@@ -247,13 +226,55 @@ class SqliteORM:
                 developers.url AS dev_url
 
             FROM apps 
-            INNER JOIN categories ON categories.app_id = apps.id
-            INNER JOIN content_ratings ON content_ratings.app_id = apps.id
-            INNER JOIN screenshots ON screenshots.app_id = apps.id
-            INNER JOIN interactive_elements ON interactive_elements.app_id = apps.id
-            INNER JOIN histograms ON histograms.app_id = apps.id
-            INNER JOIN developers ON developers.developer_id = apps.developer_id
-            WHERE app_id = '{app_id}'
+            INNER JOIN developers ON developers.id = apps.developer_id
+            WHERE apps.app_id = '{app_id}'
+            """
+        )
+        return cursor.fetchone()
+
+    def query_categories(self, app_id: str) -> tuple:
+        cursor = self.connection.cursor()
+        cursor.execute(
+            f"""
+            SELECT category FROM categories WHERE app_id = {app_id} """
+        )
+        return cursor.fetchall()
+
+    def query_screenshots(self, app_id: str) -> tuple:
+        cursor = self.connection.cursor()
+        cursor.execute(f"SELECT screenshot FROM screenshots WHERE app_id = {app_id}")
+        return cursor.fetchall()
+
+    def query_interactive_elements(self, app_id: str) -> tuple:
+        cursor = self.connection.cursor()
+        cursor.execute(
+            f"""
+            SELECT interactive_element FROM interactive_elements WHERE app_id = {app_id}
+            """
+        )
+        return cursor.fetchall()
+
+    def query_content_ratings(self, app_id: str) -> tuple:
+        cursor = self.connection.cursor()
+        cursor.execute(
+            f"""
+            SELECT content_rating FROM content_ratings WHERE app_id = {app_id}
+            """
+        )
+        return cursor.fetchall()
+
+    def query_histogram(self, app_id: str) -> tuple:
+        cursor = self.connection.cursor()
+        cursor.execute(
+            f"""
+            SELECT 
+                one_star,
+                two_stars,
+                three_stars,
+                four_stars,
+                five_stars
+            FROM histograms 
+            WHERE app_id = {app_id}
             """
         )
         return cursor.fetchone()
@@ -262,3 +283,11 @@ class SqliteORM:
         cursor = self.connection.cursor()
         cursor.execute(f"SELECT rowid, * FROM apps WHERE app_id =  '{app_id}'")
         return True if cursor.fetchone() else False
+
+
+if __name__ == "__main__":
+    sqlite = SqliteORM("apps.db")
+    sqlite.connect()
+    data = sqlite.query_app("com.paradyme.solarsmash")
+    print(data)
+    print(len(data))
