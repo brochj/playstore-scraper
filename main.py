@@ -50,6 +50,7 @@ def save_url_to_txt(value, filename: str) -> None:
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1].startswith("https"):
         url = sys.argv[1]
+        print(f"scraping: {get_id_from_url(url)}")
         scrape_url(url)
 
     elif len(sys.argv) > 1 and sys.argv[1] == "-l":
