@@ -279,7 +279,7 @@ class SqliteORM:
         )
         return cursor.fetchone()
 
-    def checkAppExistance(self, app_id: str) -> bool:
+    def check_app_existance(self, app_id: str) -> bool:
         cursor = self.connection.cursor()
         cursor.execute(f"SELECT rowid, * FROM apps WHERE app_id =  '{app_id}'")
         return True if cursor.fetchone() else False

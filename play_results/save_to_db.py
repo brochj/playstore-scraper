@@ -34,7 +34,7 @@ class SaveToDB:
         self.app_data = app_data
         self.sqlite.connect()
 
-        if self.sqlite.checkAppExistance(self.app_data["app_id"]):
+        if self.sqlite.check_app_existance(self.app_data["app_id"]):
             raise ValueError("This app is already in the database")
 
         self._save_developer()
