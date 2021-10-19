@@ -14,12 +14,22 @@ class Sqlite3ORMTest(unittest.TestCase):
     def tearDown(self) -> None:
         self.sqlite.close()
 
-    def test_query_screenshots(self):
+    def test_query_screenshots_from_database(self):
         screenshots = self.sqlite.query_screenshots(4)
         self.assertTrue(screenshots)
         self.assertIsInstance(screenshots, list)
 
-    def test_insert_developer(self):
+    def test_insert_developer_with_missing_data(self):
+        dev_id = self.sqlite.insert_developer(
+            {
+                "developer": "fake_data",
+                "developer_address": "fake_data",
+            }
+        )
+        self.assertTrue(dev_id)
+        self.sqlite.try_to_commit_and_close()
+
+    def test_insert_developer_passing_valid_data(self):
         dev_id = self.sqlite.insert_developer(
             {
                 "developer": "fake_data",
@@ -32,7 +42,7 @@ class Sqlite3ORMTest(unittest.TestCase):
         self.assertTrue(dev_id)
         self.sqlite.try_to_commit_and_close()
 
-    def test_check_app_existance(self):
+    def test_check_app_existance_passing_correct_id(self):
         app_exists = self.sqlite.check_app_existance(APP_ID)
         self.assertTrue(app_exists)
 
