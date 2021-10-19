@@ -55,6 +55,7 @@ CONTENT_RATINGS_TABLE = """CREATE TABLE IF NOT EXISTS content_ratings (
 SCREENSHOTS_TABLE = """CREATE TABLE IF NOT EXISTS screenshots (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         screenshot TEXT,
+        filename TEXT,
         app_id INTEGER,
         FOREIGN KEY (app_id) REFERENCES apps (id)
     )

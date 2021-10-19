@@ -1,3 +1,4 @@
+from slugify import slugify
 from play_results.sqlite3_orm import SqliteORM
 from play_results.models import (
     APPS_TABLE,
@@ -75,6 +76,12 @@ class SaveToDB:
             self.sqlite.insert_interactive_element(data)
 
     def _save_screenshots(self) -> None:
-        for screenshot in self.app_data.get("screenshots"):
-            data = {"screenshot": screenshot, "app_id": self.app_id}
+        screenshots = self.app_data.get("screenshots")
+
+        for i, screenshot in enumerate(screenshots):
+            data = {
+                "screenshot": screenshot,
+                "app_id": self.app_id,
+                "filename": slugify(self.app_data.get("title")) + f"-{i}",
+            }
             self.sqlite.insert_screenshot(data)

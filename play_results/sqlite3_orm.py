@@ -141,12 +141,14 @@ class SqliteORM:
         cursor = self.connection.cursor()
 
         screenshot = values.get("screenshot")
+        filename = values.get("filename")
         app_id = values.get("app_id")
 
         cursor.execute(
-            "INSERT INTO screenshots VALUES (NULL, ?, ?)",
+            "INSERT INTO screenshots VALUES (NULL, ?, ?, ?)",
             (
                 screenshot,
+                filename,
                 app_id,
             ),
         )
